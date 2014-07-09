@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC 
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" 
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- 是否开启动态方法调用，使用通配符时需关闭 -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+
+	<package name="yh" namespace="/" extends="struts-default">
+		<action name="sum" class="com.yh.struts.FirstAction">
+			<result name="positive">/positive.jsp</result>
+			<result name="negative">/negative.jsp</result>
+		</action>
+
+		<!-- 使用通配符 首先得关闭开关 <constant name="struts.enable.DynamicMethodInvocation" 
+			value="false" /> -->
+		<action name="*_user" class="com.yh.struts.UserAction" method="{1}">
+			<result name="{1}">/user/{1}.jsp</result>
+		</action>
+
+
+		<!-- 逻辑定义 -->
+		<action name="login" class="com.yh.struts.LoginAction" method="login">
+			<result name="success">/success.jsp</result>
+			<result name="error">/loin.jsp</result>
+		</action>
+		<action name="regist" class="com.yh.struts.LoginAction" method="regist">
+			<result name="success">/success.jsp</result>
+			<result name="error">/regist.jsp</result>
+		</action>
+
+		<!-- 动态方法调用，不推荐 -->
+		<action name="submit" class="com.yh.struts.MoreSubmitAction">
+			<result name="print">/result.jsp</result>
+			<result name="save">/result.jsp</result>
+		</action>
+
+		<!-- validate -->
+		<action name="validate" class="com.yh.struts.ValidateAction">
+			<result name="success">/validate/result.jsp</result>
+			<result name="input">/validate.jsp</result>
+		</action>
+	</package>
+</struts>
