@@ -5,8 +5,42 @@
 <struts>
 	<!-- 是否开启动态方法调用，使用通配符时需关闭 -->
 	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	
+	<!-- 指定WEB应用的编码集，相当于调用HttpServletRequest.setCharacterEncodint方法，如果使用了velocity或freemarker,它也用于指定输出的编码格式  -->
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	
+	<!-- 指定请求后缀为.action，指定多个请求后缀用逗号分隔  -->
+	<constant name="struts.action.extension" value="action" />
+	
+	<!--设置浏览器是否缓存静态内容，建议：开发阶段关闭，运行时开启   -->
+	<constant name="struts.serve.static.browserCache" value="false" />
+	
+	<!--当struts.xml配置文件修改后，系统是否重新加载该文件，开发阶段打开此功能   -->
+	<constant name="struts.configuration.xml.reload" value="true" />
+	
+	<!--  开发提示：出错时打印更详细的信息 -->
+	<constant name="struts.devMode" value="true" />
+	
+	<!-- 指定请求的后缀可以是.do或.action  -->
+	<constant name="struts.action.extension" value="do,action" />
 
 	<package name="yh" namespace="/" extends="struts-default">
+		<!-- 拦截器 -->
+		<interceptors>
+			<interceptor name="method" class="com.yh.struts.MultiMethodInterceptor" />
+
+			<interceptor name="filter" class="com.yh.struts.MyFilterInterceptor">
+				<param name="includeMethods">abcd</param>
+				<param name="name">中国</param>
+			</interceptor>
+
+			<interceptor-stack name="methodStack">
+				<interceptor-ref name="method" />
+				<interceptor-ref name="filter" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+
 		<action name="sum" class="com.yh.struts.FirstAction">
 			<result name="positive">/positive.jsp</result>
 			<result name="negative">/negative.jsp</result>
@@ -39,6 +73,34 @@
 		<action name="validate" class="com.yh.struts.ValidateAction">
 			<result name="success">/validate/result.jsp</result>
 			<result name="input">/validate.jsp</result>
+		</action>
+
+		<!-- 使用validation框架 -->
+		<action name="new_validate" class="com.yh.struts.NewValidateAction">
+			<result name="input">/validate/validate_form.jsp</result>
+			<result name="success">/validate/validate_form.jsp</result>
+		</action>
+
+		<!-- 上传文件 -->
+		<action name="upload" class="com.yh.struts.UploadAction">
+			<!-- 配置fileUpload的拦截器 -->
+			<interceptor-ref name="fileUpload">
+				<!-- 配置允许上传的文件类型 -->
+				<param name="allowedTypes">image/bmp,image/gif,image/jpg</param>
+				<!-- 配置允许上传的文件大小 -->
+				<param name="maximumSize">2000000</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<result name="input">/upload/upload.jsp</result>
+			<result name="success">/upload/result.jsp</result>
+		</action>
+
+
+
+		<action name="interceptor_test" class="com.yh.struts.InterceptorAction"
+			method="abcd">
+			<interceptor-ref name="methodStack" />
+			<result name="success">/interceptor/success.jsp</result>
 		</action>
 	</package>
 </struts>
