@@ -10,8 +10,11 @@
 	<li><a href="regist.jsp">逻辑定义2: regist</a></li>
 	<li><a href="create_user">通配符1: create_user（需关闭开关，推荐）</a></li>
 	<li><a href="list_user">通配符2: list_user</a></li>
-	<li><a href="update_user">通配符3: list_user</a></li>
+	<li><a href="update_user">通配符3: update_user</a></li>
 	<li><a href="validate.jsp">验证</a></li>
+	<li><a href="validate/validate_form.jsp">使用验证框架</a></li>
+	<li><a href="upload/upload.jsp">上传文件</a></li>
+	<li><a href="interceptor_test">拦截器</a></li>
 	</ul>
 </body>
 </html>
